@@ -1,0 +1,38 @@
+.grid line {
+    stroke: rgb(112, 108, 108);
+    stroke-opacity: 0.3;
+    shape-rendering: crispEdges;
+    stroke-dasharray: 1;
+  }
+
+.grid .domain{
+    display: none;
+}
+/* svg > g.grid.y-axis > g:nth-child(2){
+    display:none;
+} */
+g.y.axis > text,  g.x.axis > text{
+    font-size: 18px;
+}
+
+.line-graph{
+    padding: 0 0 50px 50px;
+}
+
+.graph-section{
+    background-color: #FCFBFB;
+    margin-top: 30px;
+}
+
+.info-section{
+    width: 140px;
+    padding-top: 240px;
+    margin-left: -36px;
+}
+.heading{
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+    font-size:26px;
+    margin-bottom:-32px;
+}

@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import data from './data'; 
+import Linechart from "./components/line-chart"
+import { formatGraphData } from "./lib";
+import _ from 'lodash'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      formattedData: {},
+      sortedData : [],
+      dataFormattedFlag : false,
+      sumTotal: 0,
+      summedArray: []
+    }
+  }
+
+  componentDidMount(){
+    const {sumTotal, categoryMap, summedArray} = formatGraphData(data);
+    const sortedData = _.sortBy(data, ['category']);
+    this.setState({formattedData:categoryMap,sortedData:sortedData, dataFormattedFlag:true, sumTotal: sumTotal, summedArray: summedArray})
+  }
+
+  render(){
+    const {sortedData, formattedData, dataFormattedFlag, sumTotal, summedArray} = this.state;
+    return (
+      <div className="App">
+        <div className="container">
+          {/* {data.map(e => <div>{e.user} </div>)} */}
+        </div>
+        <div>
+          {dataFormattedFlag && <Linechart data = {sortedData} formattedData={formattedData} sumTotal = {sumTotal} summedArray={summedArray} />}
+        </div>
+      </div>
+    );
+  }
+
+  
 }
-
-export default App;
