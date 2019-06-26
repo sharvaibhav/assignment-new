@@ -75,6 +75,43 @@ export default class Linechart extends Component{
             .attr("stroke-width", 3)
             .attr("d", this.line);
     }
+
+
+    mousemove = ()=> {
+        var x0 = x.invert(d3.mouse(this)[0]),
+            i = bisectDate(data, x0, 1),
+            d0 = data[i - 1],
+            d1 = data[i],
+            d = x0 - d0.year > d1.year - x0 ? d1 : d0;
+        focus.attr("transform", "translate(" + x(d.year) + "," + y(d.value) + ")");
+        focus.select("text").text(function() { return d.value; });
+        focus.select(".x-hover-line").attr("y2", height - y(d.value));
+        focus.select(".y-hover-line").attr("x2", width + width);
+        console.log("vaibahv");
+      }
+
+    makeFocusLine = ()=>{
+
+        const {height, width, sidePadding} = this.props;
+
+        let focus = this.svg.append("g").attr("class", "focus").style("display", "none");
+
+        focus.append("line").attr("class", "x-hover-line hover-line").attr("y1", 0).attr("y2", height);
+
+        focus.append("line").attr("class", "y-hover-line hover-line").attr("x1", width).attr("x2", width);
+
+        focus.append("circle").attr("r", 7.5);
+
+        focus.append("text").attr("x", 15).attr("dy", ".31em");
+
+        this.svg.append("rect").attr("transform", "translate(" + 0 + "," + sidePadding + ")")
+            .attr("class", "overlay")
+            .attr("width", width)
+            .attr("height", height)
+            .on("mouseover", function() { focus.style("display", null); })
+            .on("mouseout", function() { focus.style("display", "none"); })
+            .on("mousemove", this.mousemove);
+    }
     /**
      *Creates the Axis
      */
@@ -120,6 +157,7 @@ export default class Linechart extends Component{
         this.makeLine();
         this.makeAxis();
         this.makeGridLine();
+        this.makeFocusLine();
     }
 
     render(){
@@ -138,6 +176,7 @@ Linechart.defaultProps = {
     sidePadding:140,
     internalPadding:0,
     tics: 8,
-    xPad: 2
+    xPad: 2,
+
 }
 
