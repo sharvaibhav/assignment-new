@@ -29,7 +29,6 @@ export default class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          {/* {data.map(e => <div>{e.user} </div>)} */}
         </div>
         <div>
           {dataFormattedFlag && <Linechart data = {sortedData} formattedData={formattedData} sumTotal = {sumTotal} summedArray={summedArray} />}
