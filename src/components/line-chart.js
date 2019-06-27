@@ -153,13 +153,9 @@ export default class Linechart extends Component{
         var s = d3.event.selection || this.scalex2.range();
         console.log(s);
         this.scalex.domain(s.map(this.scalex2.invert, this.scalex2));
-        let line = this.svg.select(".line").attr("d", this.line);
-
+        this.svg.select(".line").attr("d", this.line);
         this.svg.select(".x.axis").call(this.xAxis);
-
-        this.svg.select(".zoom").call(this.zoom.transform, d3.zoomIdentity
-            .scale(this.props.width / (s[1] - s[0]))
-            .translate(-s[0], 0));
+        this.svg.select(".zoom").call(this.zoom.transform, d3.zoomIdentity.scale(this.props.width / (s[1] - s[0])).translate(-s[0], 0));
     }
     /**
      *Creates the Axis
