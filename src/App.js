@@ -28,8 +28,6 @@ export default class App extends Component {
     const {sortedData, formattedData, dataFormattedFlag, sumTotal, summedArray} = this.state;
     return (
       <div className="App">
-        <div className="container">
-        </div>
         <div>
           {dataFormattedFlag && <Linechart data = {sortedData} formattedData={formattedData} sumTotal = {sumTotal} summedArray={summedArray} />}
         </div>

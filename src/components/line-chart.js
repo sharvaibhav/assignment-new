@@ -142,7 +142,7 @@ export default class Linechart extends Component{
             .attr("transform",`translate( ${this.props.marginLeft2},${this.props.marginTop2 + this.props.height})`);
             
             /*summary chart*/
-            context.append("path").attr("class", "line").datum(this.props.summedArray).attr("fill", "none").attr("stroke", "steelblue").attr("stroke-linejoin", "round").attr("stroke-linecap", "round").attr("stroke-width", 3).attr("d", this.line2);
+            context.append("path").attr("class", "line2").datum(this.props.summedArray).attr("fill", "none").attr("stroke", "steelblue").attr("stroke-linejoin", "round").attr("stroke-linecap", "round").attr("stroke-width", 3).attr("d", this.line2)
             /*the brush */
             context.append("g").attr("class", "brush").call(this.brush).call(this.brush.move,this.scalex2.range());
     }
