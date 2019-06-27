@@ -26,9 +26,9 @@ export default class Linechart extends Component{
         return this.scaley2((total/sumTotal)*100)
     });
 
-    brush = d3.brushX().extent([[0, 0], [this.props.width, this.props.brushHeight]]).on("brush end", this.brushed);
+    brush = d3.brushX().extent([[0, 0], [this.props.width, this.props.brushHeight]]).on("brush end", ()=>{this.brushed()});
 
-    zoom = d3.zoom().scaleExtent([1, Infinity]).translateExtent([[0, 0], [this.props.width,this.props.height]]).extent([[0, 0], [this.props.width, this.props.height]]).on("zoom", this.zoomed);
+    zoom = d3.zoom().scaleExtent([1, Infinity]).translateExtent([[0, 0], [this.props.width,this.props.height]]).extent([[0, 0], [this.props.width, this.props.height]])
 
     /**
      * Updates the scales on new values
@@ -96,8 +96,8 @@ export default class Linechart extends Component{
     
 
     makeFocusLine = ()=>{
-
-        const {height, width, sidePadding} = this.props;
+        const {height, width} = this.props;
+        /*create focus structure */
         let focus = this.svg.append("g").attr("class", "focus").style("display", "none");
         focus.append("line").attr("class", "x-hover-line hover-line").attr("y1", 0).attr("y2", height);
         focus.append("line").attr("class", "y-hover-line hover-line").attr("x1", 0).attr("x2", width);
@@ -133,9 +133,7 @@ export default class Linechart extends Component{
                     focus.select("circle").style("display","none");
                     tooltip.style("display","none");
                 }
-                   
             });
-
     }
 
     addBrush =()=>{
@@ -150,11 +148,18 @@ export default class Linechart extends Component{
     }
 
     brushed = ()=>{
+        if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
+        console.log("brushed");
+        var s = d3.event.selection || this.scalex2.range();
+        console.log(s);
+        this.scalex.domain(s.map(this.scalex2.invert, this.scalex2));
+        let line = this.svg.select(".line").attr("d", this.line);
 
-    }
+        this.svg.select(".x.axis").call(this.xAxis);
 
-    zoomed = ()=>{
-
+        this.svg.select(".zoom").call(this.zoom.transform, d3.zoomIdentity
+            .scale(this.props.width / (s[1] - s[0]))
+            .translate(-s[0], 0));
     }
     /**
      *Creates the Axis
@@ -225,6 +230,5 @@ Linechart.defaultProps = {
     tics: 8,
     xPad: 2,
     brushHeight: 120
-
 }
 

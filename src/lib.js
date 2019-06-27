@@ -1,8 +1,6 @@
 import _ from 'lodash';
-import * as d3 from "d3";
 
 export function formatGraphData(data){
-    let total = 0;
     const  summedArray  = _(data)
         .groupBy('category')
         .map((objs, key) => ({
@@ -18,12 +16,9 @@ export function formatGraphData(data){
     return {sumTotal, categoryMap, summedArray}
 }
 
-export function dataMatcher(lookup, key,yVal){
-    const format = d3.format(",.1f");
-    let xkey = myMatcher(key,0.15);
-    let ykey = format(yVal);
+export function dataMatcher(lookup, key){
+    let xkey = myMatcher(key,0.1);
     if(lookup[xkey]){
-        debugger;
         const data = lookup[xkey];
         return data.user
     }
@@ -34,7 +29,6 @@ function myMatcher(number,pad){
     let n = Math.round(number);
     let n1 = n + pad;
     let n2 = n - pad;
-
     if(number > n2 && number < n1){
         return n;
     }
